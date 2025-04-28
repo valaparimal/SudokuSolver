@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sudoku Solver</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="title"><h1>Sudoku Solver</h1></div>
+        <div id="sudoku-board"></div>
+        <div class="button-container">
+            <button id="reload-button">Reload</button>
+            <button id="solve-button">Solve</button>
+        </div>
+        <div class="error"></div>
+    </div>
+    
+    <div id="loader" style="display:none;">
+        <div class="spinner"></div>
+        <div>Solving...</div>
+    </div>
+</body>
+<script src="sudoku.js"></script>
+</html>
