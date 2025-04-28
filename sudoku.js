@@ -1,7 +1,6 @@
 const boardContainer = document.getElementById("sudoku-board");
 const solveButton = document.getElementById("solve-button");
 const reloadButton = document.getElementById("reload-button");
-
 let board = new Array(0);
 let errorString;
 
@@ -19,15 +18,24 @@ for(let i=1; i<=81 ; i++){
 }
 
 
+
+
 // click listener for solve button
 
-solveButton.addEventListener("click",async()=>{
+solveButton.addEventListener("click",()=>{
     solveButton.disabled = true;
     solveButton.style.backgroundColor="lightGray";
     solveButton.style.color="white";
     solveButton.style.boxShadow="none";
-    // board.disabled = true;
+    solveButton.style.cursor ="not-allowed";
+    start();
+});
 
+reloadButton.addEventListener("click",()=>{
+    location.reload();
+});
+
+async function start(){
     document.getElementById("loader").style.display="flex";
     document.querySelector(".container").style.opacity="0.5";
     await new Promise(resolve =>setTimeout(resolve,100));
@@ -46,11 +54,7 @@ solveButton.addEventListener("click",async()=>{
     }
     document.getElementById("loader").style.display="none";
     document.querySelector(".container").style.opacity="1";
-});
-
-reloadButton.addEventListener("click",()=>{
-    location.reload();
-});
+}
 
 
 function solveSudoku(row,column){
@@ -197,6 +201,7 @@ function printBoard(){
     let column=0;
     celles.forEach((cell)=>{
         cell.value = board[row][column];
+        cell.style.cursor ="not-allowed";
         column++;
         if(column == 9){
             column =0;
