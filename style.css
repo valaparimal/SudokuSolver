@@ -29,6 +29,18 @@ body{
     word-spacing: 4px;
 }
 
+.title:hover{
+    animation: rotate-border 1s linear infinite;
+}
+
+@keyframes rotate-border{
+    0%{box-shadow: 2px 2px 3px 3px lightgreen;}
+    25%{box-shadow: -2px 2px 3px 3px lightgreen;}
+    50%{box-shadow: -2px -2px 3px 3px lightgreen;}
+    75%{box-shadow: 2px -2px 3px 3px lightgreen;}
+    100%{box-shadow: 2px 2px 3px 3px lightgreen;}
+}
+
 #sudoku-board{
     display: grid;
     grid-template-columns: repeat(9,40px);
@@ -56,11 +68,13 @@ body{
     border-radius: 10px;
 }
 
-#solve-button:hover , #reload-button:hover{
+#solve-button:hover , #reload-button:hover {
     background-color: yellow;
     color:black;
     box-shadow: 1px 1px 1px 0.5px black;
+    
 }
+
 
 .error{
     color: red;
