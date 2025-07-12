@@ -1,11 +1,14 @@
 const boardContainer = document.getElementById("sudoku-board");
 const solveButton = document.getElementById("solve-button");
 const reloadButton = document.getElementById("reload-button");
+let oldBoard = new Array(0);
 let board = new Array(0);
 let errorString;
+let isWrong = false;
 
 // create inputs 
-for(let i=1; i<=81 ; i++){
+let columnCount =0;
+for(let i=0; i<81 ; i++){
     let cell = document.createElement("input");
     cell.setAttribute("class","cell")
     cell.type="number";
@@ -15,6 +18,22 @@ for(let i=1; i<=81 ; i++){
         cell.value = cell.value%10;
     });
     boardContainer.appendChild(cell);
+    columnCount++;
+    if(columnCount == 3 || (columnCount == 6) ){
+        cell.style.marginRight ="2px";
+        cell.style.borderRight = "2px solid white";
+    }else if(columnCount == 4 || (columnCount == 7) ){
+        cell.style.borderLeft = "2px solid white";
+        if(columnCount==7){
+            columnCount=-2;
+        }
+    }
+
+    if(i- i%9 == 18 || i-i%9 == 45){
+        cell.style.borderBottom = "2px solid white";
+    }else if(i- i%9 == 27 || i-i%9 == 54){
+        cell.style.borderTop = "2px solid white";
+    }
 }
 
 
@@ -47,6 +66,7 @@ async function start(){
             // solveButton.disabled = false;
             solveButton.style.backgroundColor="green";
         }else{
+            alert("Sothing wrong...");
             console.log("Sothing wrong...");
         }
     }else{
@@ -69,13 +89,17 @@ function solveSudoku(row,column){
     }
     if(board[row][column] == 0){
         for(let i=1 ; i<10 ; i++){
-            if(isPut(i,row,column)){
+            if(isPut(i,row,column,false)){
                 board[row][column] = i;
                 if(solveSudoku(row,column+1)){
                     return true;
                 }else{
                     board[row][column] = 0;
                 }
+            }else{
+                // if(isWrong){
+                //     return false;
+                // }
             }
         }
     }else{
@@ -118,7 +142,7 @@ function createSudokuArray(){
 
     let celles = document.querySelectorAll(".cell");
     let rowArray = new Array(0);
-    
+    let oldRowArray = new Array(0);
     let index = 0;
 
     celles.forEach((cell)=>{
@@ -131,11 +155,14 @@ function createSudokuArray(){
             cell.style.color = "black";
         }
         
-        rowArray[index++] = number;
+        rowArray[index] = number;
+        oldRowArray[index++] = number;
         if(index == 9){
             index =0;
             board.push(rowArray);
+            oldBoard.push(oldRowArray);
             rowArray = new Array(0);
+            oldRowArray = new Array(0);
         }
         cell.disabled = true;
     });
@@ -168,6 +195,22 @@ function isPut(number,row,column){
         // horizontal check
         if(board[row][i] == number){
             errorString = `\nii) (Row,Column) : ( ${row+1} , ${i+1} )`;
+
+            if(oldBoard[row][i] == number){
+                // do this for check is then same number in same column , if same number than sudoku is wrong formated
+                for(let j=0; j<9 ; j++){
+                    if(oldBoard[j][column] == number){
+                        // let errorDiv = document.querySelector(".error");
+                        // errorDiv.style.display="block";
+                        // errorDiv.innerText = `Sudoku may wrong! (Please check data!)\nNumber : ${number}\ni) (Row,Column) : ( ${row+1} , ${i+1} ) \nii) (Row,Column) : ( ${j+1} , ${column+1} )`;
+                        // // stop solving
+                        // console.log("May some error:");
+                        isWrong = true;
+                        // printBoard();
+                    }
+                }
+            }
+
             return false;
         }
 
